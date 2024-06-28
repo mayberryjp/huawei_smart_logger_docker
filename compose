@@ -3,10 +3,9 @@ services:
   huawei_smart_logger_docker:
     container_name: huawei_smart_logger_docker
     restart: "unless-stopped"
-    image: huawei_smart_logger_docker:v1.0.1
+    image: huawei_smart_logger_docker:v1.0.2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - HUAWEI_PASSWORD=
-      - VERSION=v4
-
+      - MQTT_PASSWORD=

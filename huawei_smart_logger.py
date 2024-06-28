@@ -15,10 +15,10 @@ requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.
 
 if (IS_CONTAINER):
     HUAWEI_HOST = os.getenv("HUAWEI_HOST","https://192.168.50.38")
-    HUAWEI_PASSWORD=os.getenv("HUAWEI_USERNAME","Japanliving22")
+    HUAWEI_PASSWORD=os.getenv("HUAWEI_USERNAME","")
     HUAWEI_USERNAME=os.getenv("HUAWEI_PASSWORD","admin")
     MQTT_HOST = os.getenv("MQTT_HOST","earthquake.832-5.jp")
-    MQTT_PASSWORD=os.getenv("MQTT_PASSWORD","earthquake")
+    MQTT_PASSWORD=os.getenv("MQTT_PASSWORD","")
     MQTT_USERNAME=os.getenv("MQTT_USERNAME","japan")   
 
 class HuaweiSmartLoggerSensor:
@@ -114,7 +114,6 @@ def request_and_publish():
         client.connect(MQTT_HOST, 1883)
         client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/state", payload=value, qos=0, retain=False)    
         client.disconnect()
-
 
 
 if __name__ == '__main__':
