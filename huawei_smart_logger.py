@@ -120,7 +120,7 @@ def request_and_publish():
 
         entity = re.sub(r'\s+', '_', entity)
         entity = re.sub(r'\'', '', entity)
-        entity = re.sub(r'/', '', entity)
+        entity = re.sub(r'/', '_', entity)
         value = element[7]
 
         print(f"{entity} -> {value}")
