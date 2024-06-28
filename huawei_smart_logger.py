@@ -33,13 +33,12 @@ class HuaweiSmartLoggerSensor:
         if (test != None):
            self.state_class = name_object['attribute']
         else:
-            self.state_class = ""
+            self.state_class = "measurement"
         self.state_topic = f"homeassistant/sensor/huawei_smart_logger_{name_replace}/state"
         self.unique_id = f"huawei_smart_logger_{name_replace}"
         self.device = {
             "identifiers": [f"huawei_smart_logger_{name_replace}"][0],
             "name": f"Huawei Smart Logger For {name_replace}",
-            "device_class": self.device_class[0]
         }
 
     def to_json(self):
