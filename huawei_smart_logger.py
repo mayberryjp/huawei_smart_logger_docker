@@ -15,8 +15,8 @@ requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.
 
 if (IS_CONTAINER):
     HUAWEI_HOST = os.getenv("HUAWEI_HOST","https://192.168.50.38")
-    HUAWEI_PASSWORD=os.getenv("HUAWEI_USERNAME","")
-    HUAWEI_USERNAME=os.getenv("HUAWEI_PASSWORD","admin")
+    HUAWEI_PASSWORD=os.getenv("HUAWEI_PASSWORD","")
+    HUAWEI_USERNAME=os.getenv("HUAWEI_USERNAME","admin")
     MQTT_HOST = os.getenv("MQTT_HOST","earthquake.832-5.jp")
     MQTT_PASSWORD=os.getenv("MQTT_PASSWORD","")
     MQTT_USERNAME=os.getenv("MQTT_USERNAME","japan")   
