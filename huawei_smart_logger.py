@@ -10,6 +10,7 @@ from random import randrange
 import datetime
 
 from const import IS_CONTAINER, VERSION, SLEEP_INTERVAL, ENTITIES
+
 # Suppress only the single InsecureRequestWarning from urllib3 needed
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
@@ -22,21 +23,31 @@ if (IS_CONTAINER):
     MQTT_USERNAME=os.getenv("MQTT_USERNAME","japan")   
 
 class HuaweiSmartLoggerSensor:
-    def __init__(self, name):
-        name_replace=name
+    def __init__(self, name_constant):
+        name_replace=name_constant
+        name_object=ENTITIES[name_constant]
         self.name = f"huawei_smart_logger_{name_replace}"
-        self.device_class = None
+        self.device_class = name_object['type'],
+        self.unit_of_measurement = name_object['unit'],
+        test = name_object.get('attribute')
+        if (test != None):
+           self.state_class = name_object['attribute']
+        else:
+            self.state_class = ""
         self.state_topic = f"homeassistant/sensor/huawei_smart_logger_{name_replace}/state"
         self.unique_id = f"huawei_smart_logger_{name_replace}"
         self.device = {
-            "identifiers": [f"huawei_smart_logger_{name_replace}"],
-            "name": f"Huawei Smart Logger For {name}"
+            "identifiers": [f"huawei_smart_logger_{name_replace}"][0],
+            "name": f"Huawei Smart Logger For {name_replace}",
+            "device_class": self.device_class[0]
         }
 
     def to_json(self):
         return {
             "name": self.name,
-            "device_class": self.device_class,
+            "device_class": self.device_class[0],
+            "unit_of_measurement": self.unit_of_measurement[0],
+            "state_class": self.state_class,
             "state_topic": self.state_topic,
             "unique_id": self.unique_id,
             "device": self.device
@@ -55,10 +66,12 @@ def initialize():
         huawei_smart_logger_sensor=HuaweiSmartLoggerSensor(entity)
         # Convert dictionary to JSON string
         serialized_message = json.dumps(huawei_smart_logger_sensor.to_json())
-        #print(f"Sending sensor -> {serialized_message}")
-        #logger.info(f"Sending sensor -> {serialized_message}")
+        print(f"Sending sensor -> {serialized_message}")
+        logger.info(f"Sending sensor -> {serialized_message}")
+        print(f"entity: homeassistant/sensor/huawei_smart_logger_{entity}/config")
         client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/config", payload=serialized_message, qos=0, retain=True)
- 
+   
+        
     client.disconnect()
     logger.info(f"Initialization complete...")
     print("Initialization complete...")
@@ -108,6 +121,7 @@ def request_and_publish():
 
         entity = re.sub(r'\s+', '_', entity)
         entity = re.sub(r'\'', '', entity)
+        entity = re.sub(r'/', '', entity)
         value = element[7]
 
         print(f"{entity} -> {value}")
