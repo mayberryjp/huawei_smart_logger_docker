@@ -13,7 +13,7 @@ ENTITIES =  {
     "current_day_feed-in_to_grid": {"type": "energy", "unit": "kWh"},
     "current_day_consumption": {"type": "energy", "unit": "kWh"},
     "total_power_supply_from_grid": {"type": "energy", "unit": "kWh"},
-    "total_supply_from_grid": {"type": "energy", "unit": "kWh"},
+    "total_supply_from_grid": {"type": "energy", "unit": "kWh", "attribute": "total_increasing"},
     "total_feed-in_to_grid": {"type": "energy", "unit": "kWh", "attribute": "total_increasing"},
     "total_power_consumption": {"type": "energy", "unit": "kWh"},
     "pv_output_power": {"type": "power", "unit": "kW"},
@@ -27,3 +27,5 @@ ENTITIES =  {
     "total_discharge": {"type": "energy", "unit": "kWh"},
     "rated_ess_power": {"type": "power", "unit": "kW"}
 }
+
+#sensor.huawei_smart_logger_for_total_supply_from_grid_huawei_smart_logger_total_supply_from_grid
