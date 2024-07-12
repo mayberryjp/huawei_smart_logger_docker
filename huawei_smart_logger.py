@@ -72,6 +72,10 @@ def initialize():
     print("Initialization starting...")
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
+    client.on_publish = on_publish
+    client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
+
     try:
       client.connect(MQTT_HOST, 1883)
     except Exception as e:
@@ -105,6 +109,9 @@ def request_and_publish():
 
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
+    client.on_publish = on_publish
+    client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
     logger = logging.getLogger(__name__)
 
     # Perform login and save the cookies
