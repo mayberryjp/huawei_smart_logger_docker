@@ -73,7 +73,7 @@ def initialize():
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
     try:
-      client.connect(CONST_MQTT_HOST, 1883)
+      client.connect(MQTT_HOST, 1883)
     except Exception as e:
         print("Error connecting to MQTT Broker: " + str(e))
 
