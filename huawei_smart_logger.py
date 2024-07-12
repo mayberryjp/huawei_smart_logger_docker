@@ -14,6 +14,19 @@ from const import IS_CONTAINER, VERSION, SLEEP_INTERVAL, ENTITIES
 # Suppress only the single InsecureRequestWarning from urllib3 needed
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
+def on_publish(client, userdata, mid, reason_code, properties): 
+    pass
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected successfully.")
+    else:
+        print("Connection failed with error code " + str(rc))
+
+def on_disconnect(client, userdata, disconnect_flags, rc,properties):
+    if rc != 0:
+        print("Unexpected disconnection.")
+
 if (IS_CONTAINER):
     HUAWEI_HOST = os.getenv("HUAWEI_HOST","https://192.168.50.38")
     HUAWEI_PASSWORD=os.getenv("HUAWEI_PASSWORD","")
@@ -59,7 +72,10 @@ def initialize():
     print("Initialization starting...")
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
-    client.connect(MQTT_HOST, 1883)
+    try:
+      client.connect(CONST_MQTT_HOST, 1883)
+    except Exception as e:
+        print("Error connecting to MQTT Broker: " + str(e))
 
     for entity in ENTITIES:
         huawei_smart_logger_sensor=HuaweiSmartLoggerSensor(entity)
@@ -68,10 +84,20 @@ def initialize():
         print(f"Sending sensor -> {serialized_message}")
         logger.info(f"Sending sensor -> {serialized_message}")
         print(f"entity: homeassistant/sensor/huawei_smart_logger_{entity}/config")
-        client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/config", payload=serialized_message, qos=0, retain=True)
-   
+
+        try:
+            ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/config", payload=serialized_message, qos=0, retain=True)
+            if ret.rc == mqtt.MQTT_ERR_SUCCESS:
+                pass
+            else:
+                print("Failed to queue message with error code " + str(ret))
+        except Exception as e:
+            print("Error publishing message: " + str(e))   
         
-    client.disconnect()
+    try:
+        client.disconnect()
+    except Exception as e:
+        print("Error disconnecting from MQTT Broker: " + str(e))
     logger.info(f"Initialization complete...")
     print("Initialization complete...")
 
@@ -107,6 +133,10 @@ def request_and_publish():
 
     response = session.get(info_url, headers=headers, verify=False)
     response_lines = response.text.split('|')
+    try:
+        client.connect(MQTT_HOST, 1883)
+    except Exception as e:
+        print("Error connecting to MQTT Broker: " + str(e))
 
     for line in response_lines:
 
@@ -124,9 +154,20 @@ def request_and_publish():
         value = element[7]
 
         print(f"{entity} -> {value}")
-        client.connect(MQTT_HOST, 1883)
-        client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/state", payload=value, qos=0, retain=False)    
+        try:
+            ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/state", payload=value, qos=0, retain=False)  
+            if ret.rc == mqtt.MQTT_ERR_SUCCESS:
+                pass
+            else:
+                print("Failed to queue message with error code " + str(ret))
+        except Exception as e:
+            print("Error publishing message: " + str(e))
+
+
+    try:
         client.disconnect()
+    except Exception as e:
+        print("Error disconnecting from MQTT Broker: " + str(e))
 
 
 if __name__ == '__main__':
