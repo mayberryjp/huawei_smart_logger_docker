@@ -17,15 +17,12 @@ requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.
 def on_publish(client, userdata, mid, properties): 
     pass
 
-def on_connect(client, userdata, flags, rc):
-    if rc == 0:
-        print("Connected successfully.")
-    else:
-        print("Connection failed with error code " + str(rc))
+def on_connect(client, userdata, flags):
+    pass
 
-def on_disconnect(client, userdata, disconnect_flags, rc,properties):
-    if rc != 0:
-        print("Unexpected disconnection.")
+def on_disconnect(client, userdata, disconnect_flags, properties):
+    pass
+
 
 if (IS_CONTAINER):
     HUAWEI_HOST = os.getenv("HUAWEI_HOST","https://192.168.50.38")
