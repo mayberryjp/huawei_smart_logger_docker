@@ -14,9 +14,8 @@ from const import IS_CONTAINER, VERSION, SLEEP_INTERVAL, ENTITIES
 # Suppress only the single InsecureRequestWarning from urllib3 needed
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
-def on_publish(client, userdata, mid, reason_code, properties): 
-    if reason_code != 0:
-        print("Publish failed with error code " + str(reason_code))    
+def on_publish(client, userdata, mid, properties): 
+    pass
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
