@@ -15,7 +15,8 @@ from const import IS_CONTAINER, VERSION, SLEEP_INTERVAL, ENTITIES
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 def on_publish(client, userdata, mid, reason_code, properties): 
-    pass
+    if reason_code != 0:
+        print("Publish failed with error code " + str(reason_code))    
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
