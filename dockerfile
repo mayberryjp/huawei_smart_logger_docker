@@ -3,7 +3,7 @@ ARG CACHEBUST=1
 FROM python:3.11.7
 
 # Set the working directory
-WORKDIR /huawei_smart_logger_docker-v1.0.15
+WORKDIR /huawei_smart_logger_docker-v1.0.16
 
 # Copy the requirements file
 #COPY requirements.txt .

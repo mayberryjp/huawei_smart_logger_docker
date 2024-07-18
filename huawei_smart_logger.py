@@ -62,6 +62,7 @@ def initialize():
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
 
+    client.loop_start()
 
     try:
       client.connect(MQTT_HOST, 1883)
@@ -78,13 +79,15 @@ def initialize():
 
         try:
             ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/config", payload=serialized_message, qos=2, retain=True)
+            ret.wait_for_publish()
             if ret.rc == mqtt.MQTT_ERR_SUCCESS:
                 pass
             else:
                 print("Failed to queue message with error code " + str(ret))
         except Exception as e:
             print("Error publishing message: " + str(e))   
-        
+
+    client.loop_stop()        
     try:
         client.disconnect()
     except Exception as e:
