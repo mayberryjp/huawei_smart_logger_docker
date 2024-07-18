@@ -91,7 +91,7 @@ def initialize():
         print(f"entity: homeassistant/sensor/huawei_smart_logger_{entity}/config")
 
         try:
-            ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/config", payload=serialized_message, qos=0, retain=True)
+            ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/config", payload=serialized_message, qos=2, retain=True)
             if ret.rc == mqtt.MQTT_ERR_SUCCESS:
                 pass
             else:
@@ -146,6 +146,8 @@ def request_and_publish():
     except Exception as e:
         print("Error connecting to MQTT Broker: " + str(e))
 
+    client.loop_start()
+
     for line in response_lines:
 
         element = line.split('~')
@@ -163,7 +165,8 @@ def request_and_publish():
 
         print(f"{entity} -> {value}")
         try:
-            ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/state", payload=value, qos=0, retain=False)  
+            ret = client.publish(f"homeassistant/sensor/huawei_smart_logger_{entity}/state", payload=value, qos=2, retain=False)  
+            ret.wait_for_publish()
             if ret.rc == mqtt.MQTT_ERR_SUCCESS:
                 pass
             else:
@@ -171,7 +174,7 @@ def request_and_publish():
         except Exception as e:
             print("Error publishing message: " + str(e))
 
-
+    client.loop_stop()
     try:
         client.disconnect()
     except Exception as e:
