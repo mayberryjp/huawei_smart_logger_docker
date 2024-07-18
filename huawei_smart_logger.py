@@ -14,14 +14,6 @@ from const import IS_CONTAINER, VERSION, SLEEP_INTERVAL, ENTITIES
 # Suppress only the single InsecureRequestWarning from urllib3 needed
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
-def on_publish(client, userdata, mid, properties): 
-    pass
-
-def on_connect(client, userdata, flags):
-    pass
-
-def on_disconnect(client, userdata, disconnect_flags, properties):
-    pass
 
 
 if (IS_CONTAINER):
@@ -69,9 +61,7 @@ def initialize():
     print("Initialization starting...")
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
-    client.on_publish = on_publish
-    client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
+
 
     try:
       client.connect(MQTT_HOST, 1883)
@@ -106,9 +96,7 @@ def request_and_publish():
 
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     client.username_pw_set(MQTT_USERNAME,MQTT_PASSWORD)
-    client.on_publish = on_publish
-    client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
+
     logger = logging.getLogger(__name__)
 
     # Perform login and save the cookies
