@@ -11,7 +11,7 @@ COPY src ./src
 RUN python -m pip install --no-cache-dir --upgrade pip \
  && python -m pip install --no-cache-dir .
 
-RUN useradd --create-home --no-log-init appuser
+RUN adduser -D appuser
 USER appuser
 
 CMD ["python", "-m", "huawei_smart_logger"]
