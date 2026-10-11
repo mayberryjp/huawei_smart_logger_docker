@@ -1,0 +1,1 @@
+"""Huawei Smart Logger MQTT worker."""

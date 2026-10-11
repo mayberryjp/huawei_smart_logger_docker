@@ -1,0 +1,14 @@
+services:
+  huawei_smart_logger_docker:
+    image: mayberry4477/huawei_smart_logger_docker:dev
+    container_name: huawei_smart_logger_docker
+    restart: unless-stopped
+    environment:
+      HUAWEI_HOST: "${HUAWEI_HOST:-https://192.168.50.38}"
+      HUAWEI_USERNAME: "${HUAWEI_USERNAME:-admin}"
+      HUAWEI_PASSWORD: "${HUAWEI_PASSWORD:-}"
+      MQTT_HOST: "${MQTT_HOST:-earthquake.832-5.jp}"
+      MQTT_PORT: "${MQTT_PORT:-1883}"
+      MQTT_USERNAME: "${MQTT_USERNAME:-japan}"
+      MQTT_PASSWORD: "${MQTT_PASSWORD:-}"
+      SLEEP_INTERVAL: "${SLEEP_INTERVAL:-60}"

@@ -1,8 +1,6 @@
-IS_CONTAINER=1
-VERSION="v1.0.17"
-SLEEP_INTERVAL=60
+VERSION = "v1.0.17"
 
-ENTITIES =  {
+ENTITIES = {
     "grid-tied_active_power": {"type": "energy", "unit": "kWh"},
     "grid-tied_reactive_power": {"type": "power", "unit": "kW"},
     "load_power": {"type": "power", "unit": "kW"},
@@ -25,7 +23,5 @@ ENTITIES =  {
     "current-day_discharge_capacity": {"type": "energy", "unit": "kWh"},
     "total_charge": {"type": "energy", "unit": "kWh"},
     "total_discharge": {"type": "energy", "unit": "kWh"},
-    "rated_ess_power": {"type": "power", "unit": "kW"}
+    "rated_ess_power": {"type": "power", "unit": "kW"},
 }
-
-#sensor.huawei_smart_logger_for_total_supply_from_grid_huawei_smart_logger_total_supply_from_grid
